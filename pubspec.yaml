@@ -1,5 +1,5 @@
-name: mini_app_products_sdk
-description: "A new Flutter project."
+name: mini_app_products_sdk  # Le nom du package doit être mini_app_products_sdk
+description: "Un SDK Flutter pour afficher des produits"
 version: 0.0.1
 homepage:
 
