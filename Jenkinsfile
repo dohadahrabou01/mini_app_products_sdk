@@ -17,7 +17,8 @@ pipeline {
                     sh '''
                     if [ ! -d "/usr/local/flutter" ]; then
                         # Assurez-vous que Jenkins a les droits d'écriture dans /usr/local
-                        sudo chown -R jenkins:jenkins /usr/local
+                        sudo -S chown -R jenkins:jenkins /usr/local
+
                         # Cloner Flutter depuis le dépôt officiel
                         git clone https://github.com/flutter/flutter.git /usr/local/flutter
                     fi
