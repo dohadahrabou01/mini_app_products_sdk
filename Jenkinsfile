@@ -16,14 +16,16 @@ pipeline {
                     // Vérifier si Flutter est déjà installé, sinon l'installer
                     sh '''
                     if [ ! -d "/usr/local/flutter" ]; then
-                        # Assurez-vous que Jenkins peut créer les fichiers dans /usr/local
+                        # Assurez-vous que Jenkins a les droits d'écriture dans /usr/local
                         sudo chown -R jenkins:jenkins /usr/local
-                        # Installer Flutter
+                        # Cloner Flutter depuis le dépôt officiel
                         git clone https://github.com/flutter/flutter.git /usr/local/flutter
                     fi
                     '''
-                    sh 'export PATH=$PATH:/usr/local/flutter/bin'  // Ajouter Flutter au PATH
-                    sh 'flutter doctor -v'  // Vérifier l'installation de Flutter
+                    // Ajouter Flutter au PATH de l'environnement
+                    sh 'export PATH=$PATH:/usr/local/flutter/bin'
+                    // Vérifier l'installation de Flutter
+                    sh 'flutter doctor -v'
                 }
             }
         }
