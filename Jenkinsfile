@@ -18,12 +18,12 @@ pipeline {
                     if [ ! -d "/usr/local/flutter" ]; then
                         echo "Flutter not found. Installing Flutter..."
 
-                        // Ensure Jenkins has write permissions to /usr/local
-                        // Use sudo with a password (if configured) or avoid sudo entirely
-                        sudo mkdir -p /usr/local/flutter
+                      # Ensure Jenkins has write permissions to /usr/local
+# Use sudo with a password (if configured) or avoid sudo entirely
+  sudo mkdir -p /usr/local/flutter
                         sudo chown -R jenkins:jenkins /usr/local/flutter
 
-                        // Clone Flutter from the official repository
+                        # Clone Flutter from the official repository
                         git clone https://github.com/flutter/flutter.git /usr/local/flutter
                     else
                         echo "Flutter is already installed."
