@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        PATH = "/opt/flutter/bin:${env.PATH}"
+        PATH = "/usr/local/flutter/bin:${env.PATH}"
     }
     stages {
         stage('Checkout') {
