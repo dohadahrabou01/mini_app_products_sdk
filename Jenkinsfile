@@ -11,6 +11,7 @@ pipeline {
         }
         stage('Setup Flutter') {
             steps {
+                sh 'echo $PATH' // Debug: Print the PATH
                 sh 'flutter doctor -v'
             }
         }
