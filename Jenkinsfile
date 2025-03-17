@@ -1,52 +1,43 @@
 pipeline {
     agent any
     environment {
-        // Add Flutter to the PATH
-        PATH = "/usr/local/flutter/bin:${env.PATH}"
+        FLUTTER_HOME = "${WORKSPACE}/flutter"
+        PATH = "${FLUTTER_HOME}/bin:${env.PATH}"
     }
     stages {
         stage('Checkout') {
             steps {
-                checkout scm  // Check out the source code from SCM
+                checkout scm
             }
         }
         stage('Setup Flutter') {
             steps {
                 script {
-                    // Check if Flutter is already installed
                     sh '''
-                    if [ ! -d "/usr/local/flutter" ]; then
+                    if [ ! -d "$FLUTTER_HOME" ]; then
                         echo "Flutter not found. Installing Flutter..."
-
-                      # Ensure Jenkins has write permissions to /usr/local
-# Use sudo with a password (if configured) or avoid sudo entirely
-  sudo mkdir -p /usr/local/flutter
-                        sudo chown -R jenkins:jenkins /usr/local/flutter
-
-                        # Clone Flutter from the official repository
-                        git clone https://github.com/flutter/flutter.git /usr/local/flutter
+                        git clone https://github.com/flutter/flutter.git $FLUTTER_HOME
                     else
                         echo "Flutter is already installed."
                     fi
                     '''
-                    // Verify Flutter installation
                     sh 'flutter doctor -v'
                 }
             }
         }
         stage('Dependencies') {
             steps {
-                sh 'flutter pub get'  // Install Flutter dependencies
+                sh 'flutter pub get'
             }
         }
         stage('Tests') {
             steps {
-                sh 'flutter test'  // Run tests
+                sh 'flutter test'
             }
         }
         stage('Build APK') {
             steps {
-                sh 'flutter build apk'  // Build the APK
+                sh 'flutter build apk'
             }
         }
     }
