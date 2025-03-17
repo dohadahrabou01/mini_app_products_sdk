@@ -11,8 +11,12 @@ pipeline {
         }
         stage('Setup Flutter') {
             steps {
-                sh 'echo $PATH' // Debug: Print the PATH
-                sh 'flutter doctor -v'
+                script {
+                    // Vérifier si Flutter est déjà installé, sinon l'installer
+                    sh 'which flutter || git clone https://github.com/flutter/flutter.git /usr/local/flutter'
+                    sh 'export PATH=$PATH:/usr/local/flutter/bin'
+                    sh 'flutter doctor -v'  // Vérifier l'installation de Flutter
+                }
             }
         }
         stage('Dependencies') {
