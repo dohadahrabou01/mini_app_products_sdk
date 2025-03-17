@@ -1,48 +1,52 @@
 pipeline {
     agent any
     environment {
-        // Ajouter le chemin Flutter à l'environnement
+        // Add Flutter to the PATH
         PATH = "/usr/local/flutter/bin:${env.PATH}"
     }
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout scm  // Check out the source code from SCM
             }
         }
         stage('Setup Flutter') {
             steps {
                 script {
-                    // Vérifier si Flutter est déjà installé, sinon l'installer
+                    // Check if Flutter is already installed
                     sh '''
                     if [ ! -d "/usr/local/flutter" ]; then
-                        # Assurez-vous que Jenkins a les droits d'écriture dans /usr/local
-                        sudo -S chown -R jenkins:jenkins /usr/local
+                        echo "Flutter not found. Installing Flutter..."
 
-                        # Cloner Flutter depuis le dépôt officiel
+                        // Ensure Jenkins has write permissions to /usr/local
+                        // Use sudo with a password (if configured) or avoid sudo entirely
+                        sudo mkdir -p /usr/local/flutter
+                        sudo chown -R jenkins:jenkins /usr/local/flutter
+
+                        // Clone Flutter from the official repository
                         git clone https://github.com/flutter/flutter.git /usr/local/flutter
+                    else
+                        echo "Flutter is already installed."
                     fi
                     '''
-                    // Ajouter Flutter au PATH de l'environnement
-                    sh 'export PATH=$PATH:/usr/local/flutter/bin'
-                    // Vérifier l'installation de Flutter
+                    // Verify Flutter installation
                     sh 'flutter doctor -v'
                 }
             }
         }
         stage('Dependencies') {
             steps {
-                sh 'flutter pub get'  // Installer les dépendances Flutter
+                sh 'flutter pub get'  // Install Flutter dependencies
             }
         }
         stage('Tests') {
             steps {
-                sh 'flutter test'  // Lancer les tests
+                sh 'flutter test'  // Run tests
             }
         }
         stage('Build APK') {
             steps {
-                sh 'flutter build apk'  // Construire l'APK
+                sh 'flutter build apk'  // Build the APK
             }
         }
     }
