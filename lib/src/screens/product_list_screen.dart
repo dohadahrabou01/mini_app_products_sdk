@@ -11,15 +11,46 @@ class ProductListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Liste des Produits")),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(products[index].name),
-            subtitle: Text("${products[index].price} €"),
-          );
-        },
+      appBar: AppBar(
+        title: Text(
+          "Liste des Produits",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            return Card(
+              elevation: 5,
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: ListTile(
+                contentPadding: EdgeInsets.all(15),
+                leading: Icon(Icons.shopping_cart, color: Colors.deepPurple, size: 30),
+                title: Text(
+                  products[index].name,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  "${products[index].price.toStringAsFixed(2)} €",
+                  style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios, color: Colors.deepPurple),
+                onTap: () {
+                  // Action lors du clic sur un produit
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Produit sélectionné: ${products[index].name}")),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
